@@ -2,12 +2,14 @@
 // This file is part of OptionParser: https://github.com/lorentey/OptionParser
 // For licensing information, see the file LICENSE.md in the Git repository above.
 
-public struct OptionError: Error {
-    let message: String
+public struct OptionError: Error, CustomStringConvertible {
+    public let message: String
 
-    init(_ message: String) {
+    public init(_ message: String) {
         self.message = message
     }
+
+    public var description: String { return message }
 }
 
 public struct OptionParser<Record> {
