@@ -1,0 +1,7 @@
+language: objective-c
+osx_image: xcode9
+script:
+- swift build
+- swift test
+- xcrun xcodebuild -project OptionParser.xcodeproj -scheme OptionParser test
+after_success: bash <(curl -s https://codecov.io/bash)
