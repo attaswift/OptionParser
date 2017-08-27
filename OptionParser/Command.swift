@@ -91,15 +91,17 @@ extension OptionParser {
         }
 
         override func parse(from context: inout ParseContext, _ parentRecord: Record) throws {
+            let toolName = context.toolName
+            let printer = context.printer
             try syntax.parse(from: &context, parentRecord: parentRecord) { record in
                 if let commandName = record.command {
                     guard let command = self.parentSyntax!.commandsByName[commandName] else {
                         throw OptionError("Unknown command '\(commandName)'")
                     }
-                    try command.printHelp(toolName: context.toolName, printer: context.printer)
+                    try command.printHelp(toolName: toolName, printer: printer)
                 }
                 else {
-                    try self.parentSyntax!.printHelp(toolName: context.toolName, printer: context.printer)
+                    try self.parentSyntax!.printHelp(toolName: toolName, printer: printer)
                 }
             }
         }

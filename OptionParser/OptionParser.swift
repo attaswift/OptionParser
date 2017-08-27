@@ -12,7 +12,7 @@ public struct OptionError: Error {
 
 public struct OptionParser<Record> {
     let syntax: Syntax<Void, Record>
-    let action: (Record) throws -> Void
+    let action: ((Record) throws -> Void)?
 
     public init(docs: String,
                 initial: Record,
@@ -24,6 +24,17 @@ public struct OptionParser<Record> {
                   options: options,
                   commands: commands,
                   action: defaultAction)
+    }
+
+    public init(docs: String,
+                initial: Record,
+                options: [Option] = [],
+                commands: [AnyCommand]) {
+        self.init(_docs: docs,
+                  initial: initial,
+                  options: options,
+                  commands: commands,
+                  action: nil)
     }
 
     public init(docs: String,
@@ -43,7 +54,7 @@ public struct OptionParser<Record> {
          options: [Option] = [],
          parameters: [Parameter] = [],
          commands: [AnyCommand] = [],
-         action: @escaping (Record) throws -> Void) {
+         action: ((Record) throws -> Void)?) {
 
         self.syntax = Syntax<Void, Record>(docs: docs,
                                            initial: initial,

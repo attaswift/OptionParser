@@ -56,7 +56,7 @@ final class Syntax<Record, Subrecord> {
         self.init(name: name, docs: docs, initial: initial, options: options, parameters: parameters, commands: [])
     }
 
-    func parse(from context: inout ParseContext, parentRecord: Record, action: (Subrecord) throws -> Void) throws {
+    func parse(from context: inout ParseContext, parentRecord: Record, action: ((Subrecord) throws -> Void)?) throws {
         var record = try initial(parentRecord)
         var arguments: [String] = []
         var parametersOnly = false
@@ -92,7 +92,12 @@ final class Syntax<Record, Subrecord> {
             }
         }
         try parsePositionalArguments(arguments, record: &record)
-        try action(record)
+        if let action = action {
+            try action(record)
+        }
+        else {
+            try self.printHelp(toolName: context.toolName, printer: context.printer)
+        }
     }
 
     private func parsePositionalArguments(_ arguments: [String], record: inout Subrecord) throws {
