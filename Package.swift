@@ -8,7 +8,9 @@ let package = Package(
     ],
     targets: [
         .target(name: "OptionParser", path: "OptionParser"),
-        .testTarget(name: "OptionParserTests", path: "OptionParserTests"),
+        .testTarget(name: "OptionParserTests",
+                    dependencies: ["OptionParser"],
+                    path: "OptionParserTests"),
     ],
     swiftLanguageVersions: [4]
 )
